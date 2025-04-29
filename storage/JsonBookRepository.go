@@ -37,16 +37,17 @@ func (r *JsonBookRepository) ensureFileExists() {
 	}
 }
 
+// Create adds a new book to the JsonBookRepository
 func (r *JsonBookRepository) Create(cxt context.Context, b book.Book) (book.Book, error) {
 	books, err := r.loadBooks()
 	if err != nil {
-		return book.Book{}, err 
+		return book.Book{}, err
 	}
 
 	books = append(books, b)
 
-	if err:= r.saveBooks(books); err != nil {
-		return book.Book{}, nil
+	if err := r.saveBooks(books); err != nil {
+		return book.Book{}, err
 	}
 	return b, nil
 }
@@ -83,7 +84,7 @@ func (r *JsonBookRepository) Update(ctx context.Context, updatedBook book.Book) 
 	if !updated {
 		return fmt.Errorf("book not found")
 	}
-	
+
 	return r.saveBooks(books)
 }
 
@@ -140,4 +141,3 @@ func (r *JsonBookRepository) saveBooks(books []book.Book) error {
 	}
 	return os.WriteFile(r.filepath, data, 0644)
 }
-
